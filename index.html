@@ -399,6 +399,43 @@
   loadCategories();
   updateCartCount();
 
+  // Show cart contents
+function loadCart() {
+  if (cart.length === 0) {
+    cartContent.innerHTML = `<div class="empty-cart">Your cart is empty.</div>`;
+    exportExcelBtn.disabled = true;
+    return;
+  }
+  exportExcelBtn.disabled = false;
+  let html = `<table>
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>`;
+  cart.forEach((prod, index) => {
+    html += `
+    <tr>
+      <td><img src="${prod.image}" alt="${prod.name}" style="width:60px; height:60px; object-fit:cover; border-radius:4px;"></td>
+      <td>${prod.name}</td>
+      <td>${prod.description}</td>
+      <td><button class="btn btn-danger" onclick="removeFromCart(${index})">Remove</button></td>
+    </tr>`;
+  });
+  html += `</tbody></table>`;
+  cartContent.innerHTML = html;
+}
+// Function to remove a product from the cart
+function removeFromCart(index) {
+  cart.splice(index, 1); // Remove the product from the cart
+  updateCartCount(); // Update the cart count
+  loadCart(); // Re-render the cart
+}
+
 </script>
 
 <script>
