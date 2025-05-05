@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unique Slider Example</title>
+<style>
+  /* Unique slider container */
+  #uniSliderContainer {
+    position: relative;
+    width: 600px;
+    max-width: 90vw;
+    height: 350px;
+    margin: 40px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  /* Unique slide wrapper */
+  .uniSlideWrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+  }
+
+  /* Unique single slide */
+  .uniSingleSlide {
+    min-width: 100%;
+    height: 100%;
+    user-select: none;
+    position: relative;
+  }
+
+  .uniSingleSlide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+  }
+
+  /* Unique navigation arrows container */
+  #uniSliderNav {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  /* Unique arrow buttons */
+  .uniArrowBtn {
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: all;
+    user-select: none;
+    font-size: 22px;
+    line-height: 1;
+    transition: background-color 0.3s;
+  }
+
+  .uniArrowBtn:hover {
+    background-color: rgba(0,0,0,0.8);
+  }
+
+  /* Optional: dots navigation */
+  #uniDotsContainer {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .uniDot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 6px;
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .uniDot.active {
+    background-color: white;
+  }
+</style>
+</head>
+<body>
+
+<!-- Unique slider container -->
+<div id="uniSliderContainer">
+
+  <!-- Slide wrapper -->
+  <div class="uniSlideWrapper" id="uniSlideWrapper">
+    <div class="uniSingleSlide">
+      <img src="https://images.pexels.com/photos/912110/pexels-photo-912110.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" alt="Slide 1" />
+    </div>
+    <div class="uniSingleSlide">
+      <img src="https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" alt="Slide 2" />
+    </div>
+    <div class="uniSingleSlide">
+      <img src="https://images.pexels.com/photos/34950/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350" alt="Slide 3" />
+    </div>
+  </div>
+
+  <!-- Navigation arrows -->
+  <div id="uniSliderNav">
+    <button class="uniArrowBtn" id="uniPrevBtn" aria-label="Previous Slide">&#10094;</button>
+    <button class="uniArrowBtn" id="uniNextBtn" aria-label="Next Slide">&#10095;</button>
+  </div>
+
+  <!-- Dots navigation -->
+  <div id="uniDotsContainer">
+    <span class="uniDot active" data-slide="0"></span>
+    <span class="uniDot" data-slide="1"></span>
+    <span class="uniDot" data-slide="2"></span>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const slideWrapper = document.getElementById('uniSlideWrapper');
+    const slides = document.querySelectorAll('.uniSingleSlide');
+    const prevBtn = document.getElementById('uniPrevBtn');
+    const nextBtn = document.getElementById('uniNextBtn');
+    const dots = document.querySelectorAll('.uniDot');
+
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateSlider() {
+      slideWrapper.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+      dots.forEach(dot => dot.classList.remove('active'));
+      dots[currentIndex].classList.add('active');
+    }
+
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      updateSlider();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateSlider();
+    });
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        currentIndex = parseInt(e.target.getAttribute('data-slide'));
+        updateSlider();
+      });
+    });
+
+    // Optional autoplay
+    // let autoplayInterval = setInterval(() => {
+    //   currentIndex = (currentIndex + 1) % totalSlides;
+    //   updateSlider();
+    // }, 4000);
+
+    // // Pause autoplay on mouse enter, resume on mouse leave
+    // const sliderContainer = document.getElementById('uniSliderContainer');
+    // sliderContainer.addEventListener('mouseenter', () => clearInterval(autoplayInterval));
+    // sliderContainer.addEventListener('mouseleave', () => {
+    //   autoplayInterval = setInterval(() => {
+    //     currentIndex = (currentIndex + 1) % totalSlides;
+    //     updateSlider();
+    //   }, 4000);
+    // });
+
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Men's Wear Catalog</title>
+
+<link rel="stylesheet" href="AnuSlider.html">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-dpuaG1suU0eT09tx5plTaGMLBsfDLzUCCUXOY2j/LSvXYuG6Bqs43ALlhIqAJVRb" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+    color: #333;
+  }
+  header {
+    background-color: #222;
+    color: white;
+    padding: 1.2rem;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+  .page {
+    display: none;
+    max-width: 1320px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  .page.active {
+    display: block;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  } 
+  .card img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+  }
+  .card-content {
+    padding: 1rem;
+    flex-grow: 1;
+  }
+  .card h3 {
+    margin: 0 0 0.5rem 0.5rem;
+    font-size: 1.3rem;
+  }
+  .card p {
+    font-size: 0.9rem;
+    line-height: 1.3;
+    color: #555;
+    margin: 0 0 1rem 0;
+  }
+  .btn {
+    background-color: #0074D9;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  .btn:hover {
+    background-color: #005fa3;
+  }
+  .btn:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+  }
+  .btn-link {
+    background-color: #acacac;
+    margin-bottom: 2rem;
+    display: inline-block;
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    color: black;
+  }
+  .btn-link:hover {
+    background-color: #000000;
+    color: white;
+  }
+  .topnav {
+    /* background: #333; */
+    color: white;
+    padding: 0.8rem 3rem;
+    text-align: right;
+  }
+  .topnav button {
+    background: #0074D9;
+    border: none;
+    color: white;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .topnav button:hover {
+    background: #005fa3;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 0.8rem;
+    text-align: left;
+  }
+  th {
+    background-color: #0074D9;
+    color: white;
+  }
+  .empty-cart {
+    text-align: center;
+    padding: 3rem 1rem;
+    font-size: 1.2rem;
+    color: #666;
+  }
+
+  /* Unique slider container */
+  #uniSliderContainer {
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
+    height: 300px;
+    margin: 0px auto;
+    overflow: hidden;
+    /* border-radius: 10px; */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  /* Unique slide wrapper */
+  .uniSlideWrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+  }
+
+  /* Unique single slide */
+  .uniSingleSlide {
+    min-width: 100%;
+    height: 100%;
+    user-select: none;
+    position: relative;
+  }
+
+  .uniSingleSlide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* border-radius: 10px; */
+  }
+
+  /* Unique navigation arrows container */
+  #uniSliderNav {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  /* Unique arrow buttons */
+  .uniArrowBtn {
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: all;
+    user-select: none;
+    font-size: 22px;
+    line-height: 1;
+    transition: background-color 0.3s;
+  }
+
+  .uniArrowBtn:hover {
+    background-color: rgba(0,0,0,0.8);
+  }
+
+  /* Optional: dots navigation */
+  #uniDotsContainer {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .uniDot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 6px;
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .uniDot.active {
+    background-color: white;
+  }
+</style>
+</head>
+<body>
+
+    <div id="uniSliderContainer">
+
+        <!-- Slide wrapper -->
+        <div class="uniSlideWrapper" id="uniSlideWrapper">
+          <div class="uniSingleSlide">
+            <img src="1.jpg" alt="Slide 1" />
+          </div>
+          <div class="uniSingleSlide">
+            <img src="2.jpg" alt="Slide 2" />
+          </div>
+          <div class="uniSingleSlide">
+            <img src="4.jpg" alt="Slide 3" />
+          </div>
+          <div class="uniSingleSlide">
+            <img src="5.jpg" alt="Slide 4" />
+          </div>
+        </div>
+      
+        <!-- Navigation arrows -->
+        <div id="uniSliderNav">
+          <button class="uniArrowBtn" id="uniPrevBtn" aria-label="Previous Slide">&#10094;</button>
+          <button class="uniArrowBtn" id="uniNextBtn" aria-label="Next Slide">&#10095;</button>
+        </div>
+      
+        <!-- Dots navigation -->
+        <div id="uniDotsContainer">
+          <span class="uniDot active" data-slide="0"></span>
+          <span class="uniDot" data-slide="1"></span>
+          <span class="uniDot" data-slide="2"></span>
+          <span class="uniDot" data-slide="3"></span>
+        </div>
+      </div>
+
+<header>Our Catalog</header>
+
+<div class="topnav">
+  <button id="goToCartBtn">View Cart (<span id="cart-count">0</span>)</button>
+</div>
+
+<!-- Categories Page -->
+<section id="categories-page" class="page active">
+  <h2>Categories</h2>
+  <div class="grid" id="categories-grid">
+    <!-- categories loaded by JS -->
+  </div>
+</section>
+
+<!-- Products Page -->
+<section id="products-page" class="page">
+  <button class="btn-link" id="backToCategories">&larr; Back to Categories</button>
+  <h2 id="products-header">Products</h2>
+  <div class="grid" id="products-grid">
+    <!-- products loaded by JS -->
+  </div>
+</section>
+
+<!-- Cart Page -->
+<section id="cart-page" class="page">
+  <button class="btn-link" id="backToProducts">← Back to Products</button>
+  <h2>Your Cart</h2>
+  <div id="cart-content">
+    <!-- cart table or empty message -->
+  </div>
+  <br />
+  <button class="btn" id="exportExcelBtn" disabled>Export Cart to Excel</button>
+</section>
+
+<script>
+  // Categories data
+  const categories = [
+    {
+      id: 'shirts',
+      name: "Shirts",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+    },
+    {
+      id: 'jeans',
+      name: "Jeans",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+    },
+    {
+      id: 'pants',
+      name: "Pants",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+    },
+    {
+      id: 't-shirt',
+      name: "T-shirt",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+    },
+    {
+      id: 'cargo',
+      name: "Cargo",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+    }
+  ];
+
+  // Products data mapped by category id
+  const products = {
+    shirts: [
+      {
+        id: 'shirt1',
+        name: "Casual Check Shirt",
+        description: "Comfortable cotton casual shirt with checkered design.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'shirt1',
+        name: "Casual Check Shirt",
+        description: "Comfortable cotton casual shirt with checkered design.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'shirt1',
+        name: "Casual Check Shirt",
+        description: "Comfortable cotton casual shirt with checkered design.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'shirt1',
+        name: "Casual Check Shirt",
+        description: "Comfortable cotton casual shirt with checkered design.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'shirt1',
+        name: "Casual Check Shirt",
+        description: "Comfortable cotton casual shirt with checkered design.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'shirt2',
+        name: "Formal White Shirt",
+        description: "Classic formal white shirt, perfect for office.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      }
+    ],
+    jeans: [
+      {
+        id: 'jeans1',
+        name: "Denim Jeans",
+        description: "Stylish black denim jeans.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'jeans2',
+        name: "Jeans",
+        description: "Jeans for cold winter days.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      }
+    ],
+    pants: [
+      {
+        id: 'pants1',
+        name: "Denim Jeans",
+        description: "Classic slim-fit denim jeans.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'pants2',
+        name: "Chino Pants",
+        description: "Comfortable beige chino pants for casual wear.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      }
+    ],
+    shoes: [
+      {
+        id: 'shoes1',
+        name: "Running Sneakers",
+        description: "Lightweight sneakers for running and sports.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'shoes2',
+        name: "Leather Loafers",
+        description: "Elegant leather loafers for formal occasions.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      }
+    ],
+    cargo: [
+      {
+        id: 'cargo1',
+        name: "Jacket",
+        description: "Lightweight sneakers for running and sports.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      },
+      {
+        id: 'cargo2',
+        name: "Leather Loafers",
+        description: "Elegant for formal occasions.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3L0sNNa9PE2r7icSRoPNTSito1MSV1eqx5w&s"
+      }
+    ],
+  };
+
+  // Cart data stored here (product objects)
+  let cart = [];
+
+  // DOM elements
+  const categoriesGrid = document.getElementById('categories-grid');
+  const productsGrid = document.getElementById('products-grid');
+  const productsHeader = document.getElementById('products-header');
+  const categoriesPage = document.getElementById('categories-page');
+  const productsPage = document.getElementById('products-page');
+  const cartPage = document.getElementById('cart-page');
+  const backToCategoriesBtn = document.getElementById('backToCategories');
+  const backToProductsBtn = document.getElementById('backToProducts');
+  const goToCartBtn = document.getElementById('goToCartBtn');
+  const cartCountSpan = document.getElementById('cart-count');
+  const cartContent = document.getElementById('cart-content');
+  const exportExcelBtn = document.getElementById('exportExcelBtn');
+
+  // Initialize categories page
+  function loadCategories() {
+    categoriesGrid.innerHTML = '';
+    categories.forEach(cat => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${cat.image}" alt="${cat.name}" />
+        <div class="card-content">
+          <h3>${cat.name}</h3>
+        </div>
+        <div style="padding: 0 1rem 1rem 1rem;">
+          <button class="btn" data-category="${cat.id}">View Products</button>
+        </div>
+      `;
+      categoriesGrid.appendChild(card);
+    });
+  }
+
+  // Show a page and hide others
+  function showPage(page) {
+    categoriesPage.classList.remove('active');
+    productsPage.classList.remove('active');
+    cartPage.classList.remove('active');
+    page.classList.add('active');
+  }
+
+  // Load products of a category
+  function loadProducts(categoryId) {
+    const prods = products[categoryId] || [];
+    productsGrid.innerHTML = '';
+    productsHeader.textContent = `Products - ${categories.find(c => c.id === categoryId)?.name || ''}`;
+
+    prods.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${prod.image}" alt="${prod.name}" />
+        <div class="card-content">
+          <h3>${prod.name}</h3>
+          <p>${prod.description}</p>
+        </div>
+        <div style="padding: 0 1rem 1rem 1rem;">
+          <button class="btn" data-product-id="${prod.id}" data-category="${categoryId}">Add to Cart</button>
+        </div>
+      `;
+      productsGrid.appendChild(card);
+    });
+  }
+
+  // Add product to cart (max 8)
+  function addToCart(product) {
+    if (cart.length >= 8) {
+      alert("You can only add up to 8 products in the cart.");
+      return;
+    }
+    if (cart.find(p => p.id === product.id)) {
+      alert("This product is already in the cart.");
+      return;
+    }
+    cart.push(product);
+    updateCartCount();
+    alert(`Added "${product.name}" to cart.`);
+  }
+
+  // Update cart count in header
+  function updateCartCount() {
+    cartCountSpan.textContent = cart.length;
+    exportExcelBtn.disabled = cart.length === 0;
+  }
+
+  // Show cart contents
+  function loadCart() {
+    if (cart.length === 0) {
+      cartContent.innerHTML = `<div class="empty-cart">Your cart is empty.</div>`;
+      exportExcelBtn.disabled = true;
+      return;
+    }
+    exportExcelBtn.disabled = false;
+    let html = `<table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>`;
+    cart.forEach(prod => {
+      html += `
+      <tr>
+        <td><img src="${prod.image}" alt="${prod.name}" style="width:60px; height:60px; object-fit:cover; border-radius:4px;"></td>
+        <td>${prod.name}</td>
+        <td>${prod.description}</td>
+      </tr>`;
+    });
+    html += `</tbody></table>`;
+    cartContent.innerHTML = html;
+  }
+
+  // Export cart data to Excel (CSV format)
+  function exportCartToExcel() {
+    if (cart.length === 0) {
+      alert("Cart is empty. Nothing to export.");
+      return;
+    }
+    const headers = ["Image", "Name", "Description"];
+    const rows = cart.map(p => [p.image, p.name, p.description]);
+
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += headers.join(",") + "\r\n";
+
+    rows.forEach(row => {
+      csvContent += row.map(field => `"${field.replace(/"/g, '""')}"`).join(",") + "\r\n";
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    const fileName = "cart_export_" + new Date().toISOString().slice(0,10) + ".csv";
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Event listeners setup
+  // View Products from Categories
+  categoriesGrid.addEventListener('click', e => {
+    if (e.target.matches('button[data-category]')) {
+      const catId = e.target.getAttribute('data-category');
+      loadProducts(catId);
+      showPage(productsPage);
+    }
+  });
+
+  // Add to Cart from Products
+  productsGrid.addEventListener('click', e => {
+    if (e.target.matches('button[data-product-id]')) {
+      const prodId = e.target.getAttribute('data-product-id');
+      const catId = e.target.getAttribute('data-category');
+      const prod = products[catId].find(p => p.id === prodId);
+      if (prod) {
+        addToCart(prod);
+      }
+    }
+  });
+
+  // Navigation buttons
+  backToCategoriesBtn.addEventListener('click', () => {
+    showPage(categoriesPage);
+  });
+
+  backToProductsBtn.addEventListener('click', () => {
+    showPage(productsPage);
+  });
+
+  goToCartBtn.addEventListener('click', () => {
+    loadCart();
+    showPage(cartPage);
+  });
+
+  // Export button
+  exportExcelBtn.addEventListener('click', () => {
+    exportCartToExcel();
+  });
+
+  // Initial load
+  loadCategories();
+  updateCartCount();
+
+</script>
+
+<script>
+    (function(){
+      const slideWrapper = document.getElementById('uniSlideWrapper');
+      const slides = document.querySelectorAll('.uniSingleSlide');
+      const prevBtn = document.getElementById('uniPrevBtn');
+      const nextBtn = document.getElementById('uniNextBtn');
+      const dots = document.querySelectorAll('.uniDot');
+  
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+  
+      function updateSlider() {
+        slideWrapper.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[currentIndex].classList.add('active');
+      }
+  
+      prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateSlider();
+      });
+  
+      nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateSlider();
+      });
+  
+      dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          currentIndex = parseInt(e.target.getAttribute('data-slide'));
+          updateSlider();
+        });
+      });
+  
+    //   Optional autoplay
+      let autoplayInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateSlider();
+      }, 4000);
+  
+      // Pause autoplay on mouse enter, resume on mouse leave
+      const sliderContainer = document.getElementById('uniSliderContainer');
+      sliderContainer.addEventListener('mouseenter', () => clearInterval(autoplayInterval));
+      sliderContainer.addEventListener('mouseleave', () => {
+        autoplayInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % totalSlides;
+          updateSlider();
+        }, 4000);
+      });
+  
+    })();
+  </script>
+
+</body>
+</html>
+
+```
+
